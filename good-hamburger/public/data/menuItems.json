@@ -1,0 +1,39 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "Burger",
+            "price": 5.00,
+            "category": "sandwich",
+            "image": "https://img.freepik.com/premium-vector/burger-cartoon-illustration_9845-477.jpg?w=360"
+        },
+        {
+            "id": 2,
+            "name": "Egg Sandwich",
+            "price": 4.50,
+            "category": "sandwich",
+            "image": "https://cdn-images.threadless.com/~tms/Quacklab/products/3917523/original-1749943784-17f44b072d8fdc5851e149c684712140.png?v=3&d=g6NvcHOWk6R0cmltksLCgJOmcmVzaXplkIOld2lkdGjLQI8gAAAAAACmaGVpZ2h0y0CPIAAAAAAAqGFsbG93X3VwwpOvY2FudmFzX2NlbnRlcmVkks0EsM0EsIGqYmFja2dyb3VuZKZkOWVhZDOTpnJlc2l6ZZHNAyCAk69jYW52YXNfY2VudGVyZWSTzQMgzQMgpyNmZmZmZmaAk6ZlbmNvZGWSpHdlYnBVgKVmb3JjZcKpb25seV9tZXRhwg==&f=mp"
+        },
+        {
+            "id": 3,
+            "name": "Bacon Sandwich",
+            "price": 7.00,
+            "category": "sandwich",
+            "image": "https://img.freepik.com/premium-vector/kawaii-toast-with-bacon_118813-12150.jpg?semt=ais_hybrid&w=740&q=80"
+        },
+        {
+            "id": 4,
+            "name": "Fries",
+            "price": 2.00,
+            "category": "extra",
+            "image": "https://img.freepik.com/premium-vector/cartoon-french-fries-fast-food_354412-9.jpg?w=360"
+        },
+        {
+            "id": 5,
+            "name": "Soft Drink",
+            "price": 2.50,
+            "category": "extra",
+            "image": "https://img.freepik.com/free-vector/hand-drawn-soda-cartoon-illustration_52683-138182.jpg"
+        }
+    ]
+}
