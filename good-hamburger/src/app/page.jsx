@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { MenuItemCard } from "./components/MenuItemCard";
 import { menuApi } from "./services/menuApi";
 import { ShoppingCart } from "./components/ShoppingCart";
@@ -8,7 +8,7 @@ import { Filter } from "./components/Filter";
 export default function Home() {
 
   const [menu, setMenu] = useState([])
-  const [filteredMenu, setFilteredMenu] = useState(["all"])
+  const [selectedCategory, setSelectedCategory] = useState('all')
   const [isLoading, setIsLoading] = useState(true)
   const [isShoppingCartOpen, setIsShoppingCartOpen] = useState(false)
   const [shoppingCartItems, setShoppingCartItems] = useState([])
@@ -19,7 +19,6 @@ export default function Home() {
       try {
         setIsLoading(true)
         const data = await menuApiInstance.getMenuData()
-        console.log(data);
 
         setMenu(data)
       } catch (error) {
@@ -44,11 +43,12 @@ export default function Home() {
   }
 
   const onFilterChange = (category) => {
-    if (category === "sandwich") {
-      
-    }
-
+    setSelectedCategory(category);
   }
+
+  const filteredMenu = selectedCategory === 'all'
+    ? menu
+    : menu.filter((item) => item.category === selectedCategory);
 
 
 
@@ -56,14 +56,14 @@ export default function Home() {
     <div className="flex flex-col min-h-screen items-center justify-center bg-zinc-50 font-sans">
       <h1 className="text-4xl font-bold">Good Hamburger</h1>
       <div className="flex items-start justify-start w-full px-[2rem]">
-        <Filter />
+        <Filter onFilterChange={onFilterChange} />
       </div>
       <div className="flex">
         <div>
           {isLoading &&
             <div>Loading...</div>
           }
-          {menu.map((item, key) => {
+          {filteredMenu.map((item, key) => {
             return (
               <div key={key} className="flex flex-col">
                 <MenuItemCard item={item} addItemToShoppingCart={addItemToShoppingCart} />

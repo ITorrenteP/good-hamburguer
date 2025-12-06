@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Filter = () => {
+export const Filter = ({onFilterChange}) => {
     return (
         <div className="flex gap-4">
             <button
