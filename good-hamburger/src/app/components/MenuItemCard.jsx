@@ -11,7 +11,7 @@ export const MenuItemCard = ({ item, addItemToShoppingCart }) => {
                 <h1>{item.name}</h1>
                 <h1>{item.price}</h1>
                 <h1>{item.category}</h1>
-                <button onClick={() => addItemToShoppingCart(item.id)}>+</button>
+                <button onClick={() => addItemToShoppingCart(item.id, item.category)}>+</button>
             </div>
         </div>
     )
