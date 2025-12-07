@@ -1,18 +1,38 @@
-
 import React, { useState } from 'react'
+import { Button } from './Button'
 
 export const Checkout = ({ createOrder }) => {
-
     const [clientName, setClientName] = useState('')
 
+    const handleSubmit = () => {
+        if (clientName.trim()) {
+            createOrder(clientName);
+            setClientName('');
+        }
+    }
 
     return (
-        <div className='flex flex-col w-full h-fit gap-4 pt-4'>
-            <div className='flex flex-col relative'>
-                <label className='absolute left-2 -top-2 bg-zinc-50 px-2 text-sm text-green-600 pointer-events-none'>Client name</label>
-                <input type="text" value={clientName} name='clientName' className='outline-0 rounded-full shadow-sm border border-green-600 px-4 py-2' onChange={(e) => setClientName(e.target.value)} />
+        <div className='space-y-4'>
+            <div className='relative'>
+                <input 
+                    type="text" 
+                    value={clientName} 
+                    name='clientName' 
+                    placeholder='Enter your name'
+                    className='w-full outline-none rounded-xl border-2 border-gray-300 focus:border-orange-500 px-4 py-3 text-gray-800 transition-colors'
+                    onChange={(e) => setClientName(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
+                />
             </div>
-            <button disabled={!clientName.length} className='w-full h-fit px-4 py-2 rounded-full bg-green-600 text-white shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed' onClick={() => createOrder(clientName) && setClientName('')}>Order</button>
+            <Button 
+                disabled={!clientName.trim().length} 
+                variant="primary"
+                size="lg"
+                className="w-full rounded-xl disabled:from-gray-400 disabled:to-gray-500"
+                onClick={handleSubmit}
+            >
+                Place Order
+            </Button>
         </div>
     )
 }
