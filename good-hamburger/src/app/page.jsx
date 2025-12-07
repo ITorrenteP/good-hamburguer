@@ -4,6 +4,7 @@ import { MenuItemCard } from "./components/MenuItemCard";
 import { menuApi } from "./services/menuApi";
 import { ShoppingCart } from "./components/ShoppingCart";
 import { Filter } from "./components/Filter";
+import { OrdersModal } from "./components/OrdersModal";
 
 export default function Home() {
 
@@ -136,6 +137,7 @@ export default function Home() {
         <ShoppingCart setOrders={setOrders} shoppingCartItems={shoppingCartItems} isShoppingCartOpen={isShoppingCartOpen} toggleShoppingCart={toggleShoppingCart} totalPrice={totalPrice} discountPercentage={discountPercentage} basePrice={basePrice} />
         <button className='absolute bottom-4 cursor-pointer right-4 w-fit h-fit px-4 py-2 rounded-full bg-green-600 text-white shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed' onClick={() => openOrCloseModal()}>Open Orders</button>
       </div>
+      {modal && <OrdersModal orders={orders} openOrCloseModal={openOrCloseModal} />}
     </div>
   );
 }
