@@ -48,7 +48,12 @@ export default function Home() {
   const toggleShoppingCart = () => {
     setIsShoppingCartOpen(!isShoppingCartOpen)
   }
-
+  
+  const resetShop = () => {
+    setSelectedCategory('all')
+    setIsShoppingCartOpen(false)
+    setShoppingCartItems([])
+  }
 
   const openOrCloseModal = () => setModal(!modal)
 
@@ -134,7 +139,7 @@ export default function Home() {
             )
           })}
         </div>
-        <ShoppingCart setOrders={setOrders} shoppingCartItems={shoppingCartItems} isShoppingCartOpen={isShoppingCartOpen} toggleShoppingCart={toggleShoppingCart} totalPrice={totalPrice} discountPercentage={discountPercentage} basePrice={basePrice} />
+        <ShoppingCart resetShop={resetShop} setOrders={setOrders} shoppingCartItems={shoppingCartItems} isShoppingCartOpen={isShoppingCartOpen} toggleShoppingCart={toggleShoppingCart} totalPrice={totalPrice} discountPercentage={discountPercentage} basePrice={basePrice} />
         <button className='absolute bottom-4 cursor-pointer right-4 w-fit h-fit px-4 py-2 rounded-full bg-green-600 text-white shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed' onClick={() => openOrCloseModal()}>Open Orders</button>
       </div>
       {modal && <OrdersModal orders={orders} openOrCloseModal={openOrCloseModal} />}

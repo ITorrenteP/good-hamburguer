@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Checkout } from './Checkout'
+import { SuccessfullOrderToast } from './SuccessfullOrderToast'
 
-export const ShoppingCart = ({ setOrders, toggleShoppingCart, isShoppingCartOpen, shoppingCartItems, totalPrice, discountPercentage, basePrice }) => {
+export const ShoppingCart = ({ resetShop, setOrders, toggleShoppingCart, isShoppingCartOpen, shoppingCartItems, totalPrice, discountPercentage, basePrice }) => {
+    const [showToast, setShowToast] = useState(false)
 
     const createOrder = (clientName) => {
         const newOrder = {
@@ -9,7 +11,9 @@ export const ShoppingCart = ({ setOrders, toggleShoppingCart, isShoppingCartOpen
             totalPrice,
             clientName
         }
-        return setOrders((prevOrders) => [...prevOrders, newOrder])
+        setOrders((prevOrders) => [...prevOrders, newOrder])
+        resetShop()
+        setShowToast(true)
     }
 
     return (
@@ -44,6 +48,12 @@ export const ShoppingCart = ({ setOrders, toggleShoppingCart, isShoppingCartOpen
                     <Checkout createOrder={createOrder} />
                 </div>
             }
+            <SuccessfullOrderToast 
+                message="Order placed successfully!"
+                type="success"
+                isVisible={showToast}
+                onClose={() => setShowToast(false)}
+            />
         </div>
     )
 }
