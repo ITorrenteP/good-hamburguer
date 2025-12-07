@@ -80,6 +80,29 @@ export default function Home() {
     : menu.filter((item) => item.category === selectedCategory);
 
 
+  const basePrice = useMemo(() => {
+    return shoppingCartItems.reduce((total, item) => total + item.price, 0);
+  }, [shoppingCartItems]);
+
+  const { totalPrice, discountPercentage } = useMemo(() => {
+    const sandwichCount = shoppingCartItems.filter(item => item.category === "sandwich").length;
+    const extraCount = shoppingCartItems.filter(item => item.category === "extra").length;
+
+    if (sandwichCount === 1 && extraCount === 2) {
+      return { totalPrice: basePrice * 0.8, discountPercentage: 20 };
+    }
+
+    if (sandwichCount === 1 && extraCount === 1) {
+      return { totalPrice: basePrice * 0.85, discountPercentage: 15 };
+    }
+
+    if (extraCount === 2) {
+      return { totalPrice: basePrice * 0.9, discountPercentage: 10 };
+    }
+
+    return { totalPrice: basePrice, discountPercentage: 0 };
+  }, [basePrice, shoppingCartItems]);
+
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center bg-zinc-50 font-sans">
@@ -105,7 +128,7 @@ export default function Home() {
             )
           })}
         </div>
-        <ShoppingCart shoppingCartItems={shoppingCartItems} isShoppingCartOpen={isShoppingCartOpen} toggleShoppingCart={toggleShoppingCart} />
+        <ShoppingCart shoppingCartItems={shoppingCartItems} isShoppingCartOpen={isShoppingCartOpen} toggleShoppingCart={toggleShoppingCart} totalPrice={totalPrice} discountPercentage={discountPercentage} basePrice={basePrice} />
       </div>
     </div>
   );
