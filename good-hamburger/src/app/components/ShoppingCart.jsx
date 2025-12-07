@@ -1,6 +1,7 @@
 import React from 'react'
 
-export const ShoppingCart = ({ toggleShoppingCart, isShoppingCartOpen, shoppingCartItems }) => {
+export const ShoppingCart = ({ toggleShoppingCart, isShoppingCartOpen, shoppingCartItems, totalPrice, discountPercentage, basePrice }) => {
+
     return (
         <div className='text-black'>
             <div onClick={() => toggleShoppingCart()}>
@@ -12,14 +13,26 @@ export const ShoppingCart = ({ toggleShoppingCart, isShoppingCartOpen, shoppingC
                 <div>
                     <h1>Items</h1>
                     {shoppingCartItems.map((item, key) => {
-                        return <div key={key}>
+                        return <div key={key} className='flex w-[10rem] justify-between'>
                             <div>{item.name}</div>
+                            <div>${item.price.toFixed(2)}</div>
                         </div>
                     })}
-                    <h1>Total</h1>
+                    {discountPercentage > 0 && (
+                        <div className='flex flex-col'>
+                            <div className='flex justify-between w-[10rem]'>
+                                <span>Subtotal:</span>
+                                <span>${basePrice.toFixed(2)}</span>
+                            </div>
+                            <div className='flex justify-between w-[10rem] text-green-600'>
+                                <span>Discount ({discountPercentage}%):</span>
+                                <span>-${(basePrice - totalPrice).toFixed(2)}</span>
+                            </div>
+                        </div>
+                    )}
+                    <h1 className='flex justify-between w-[10rem]'>Total: ${totalPrice.toFixed(2)}</h1>
                 </div>
             }
         </div>
-
     )
 }
