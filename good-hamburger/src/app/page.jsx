@@ -9,11 +9,13 @@ export default function Home() {
 
   const [menu, setMenu] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const [orders, setOrders] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isShoppingCartOpen, setIsShoppingCartOpen] = useState(false)
   const [shoppingCartItems, setShoppingCartItems] = useState([])
   const [error, setError] = useState("")
   const menuApiInstance = new menuApi()
+  const [modal, setModal] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,6 +47,9 @@ export default function Home() {
   const toggleShoppingCart = () => {
     setIsShoppingCartOpen(!isShoppingCartOpen)
   }
+
+
+  const openOrCloseModal = () => setModal(!modal)
 
   const addItemToShoppingCart = (id, category) => {
     setError("")
@@ -128,7 +133,8 @@ export default function Home() {
             )
           })}
         </div>
-        <ShoppingCart shoppingCartItems={shoppingCartItems} isShoppingCartOpen={isShoppingCartOpen} toggleShoppingCart={toggleShoppingCart} totalPrice={totalPrice} discountPercentage={discountPercentage} basePrice={basePrice} />
+        <ShoppingCart setOrders={setOrders} shoppingCartItems={shoppingCartItems} isShoppingCartOpen={isShoppingCartOpen} toggleShoppingCart={toggleShoppingCart} totalPrice={totalPrice} discountPercentage={discountPercentage} basePrice={basePrice} />
+        <button className='absolute bottom-4 cursor-pointer right-4 w-fit h-fit px-4 py-2 rounded-full bg-green-600 text-white shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed' onClick={() => openOrCloseModal()}>Open Orders</button>
       </div>
     </div>
   );
