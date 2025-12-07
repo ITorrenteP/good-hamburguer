@@ -9,7 +9,7 @@ export const OrdersModal = ({ orders, openOrCloseModal }) => {
                 <div className='flex flex-col relative'>
                     <span className='font-black text-2xl'>{order?.clientName}</span>
                     <ul>
-                        {order?.items?.map((item) => <li>
+                        {order?.items?.map((item, index) => <li key={item.name + index}>
                             {item?.name} - {item?.category}
                         </li>)}
                     </ul>
