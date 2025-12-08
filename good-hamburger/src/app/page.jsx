@@ -5,6 +5,9 @@ import { menuApi } from "./services/menuApi";
 import { ShoppingCart } from "./components/ShoppingCart";
 import { Filter } from "./components/Filter";
 import { OrdersModal } from "./components/OrdersModal";
+import { Button } from "./components/Button";
+import { calculateDiscount } from "./utils/discountCalculator";
+import { SuccessfullOrderToast } from "./components/SuccessfullOrderToast";
 
 export default function Home() {
 
@@ -14,7 +17,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
   const [isShoppingCartOpen, setIsShoppingCartOpen] = useState(false)
   const [shoppingCartItems, setShoppingCartItems] = useState([])
-  const [error, setError] = useState("")
+  const [toast, setToast] = useState({ isVisible: false, message: '', type: 'success' })
   const menuApiInstance = new menuApi()
   const [modal, setModal] = useState(false)
 
@@ -35,15 +38,6 @@ export default function Home() {
     fetchData()
   }, [])
 
-  useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => {
-        setError("");
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [error])
 
   const toggleShoppingCart = () => {
     setIsShoppingCartOpen(!isShoppingCartOpen)
@@ -58,12 +52,10 @@ export default function Home() {
   const openOrCloseModal = () => setModal(!modal)
 
   const addItemToShoppingCart = (id, category) => {
-    setError("")
-
     if (category === "sandwich") {
       const sandwichInOrder = shoppingCartItems.some((item) => item.category === category)
       if (sandwichInOrder) {
-        setError("You can't add more than one sandwich")
+        setToast({ isVisible: true, message: "You can't add more than one sandwich", type: 'error' })
         return
       }
     }
@@ -71,7 +63,7 @@ export default function Home() {
     if (category === "extra") {
       const idInOrder = shoppingCartItems.some((item) => item.id === id)
       if (idInOrder) {
-        setError("You can't add more than one of this item")
+        setToast({ isVisible: true, message: "You can't add more than one of this item", type: 'error' })
         return
       }
     }
@@ -79,6 +71,15 @@ export default function Home() {
     const item = menu.find((item) => item.id === id);
     if (item) {
       setShoppingCartItems(prev => [...prev, item]);
+      setToast({ isVisible: true, message: `${item.name} added to cart!`, type: 'success' })
+    }
+  }
+
+  const removeItemFromCart = (itemId) => {
+    const item = shoppingCartItems.find((item) => item.id === itemId);
+    if (item) {
+      setShoppingCartItems(prev => prev.filter((item) => item.id !== itemId));
+      setToast({ isVisible: true, message: `${item.name} removed from cart`, type: 'success' })
     }
   }
 
@@ -91,58 +92,82 @@ export default function Home() {
     : menu.filter((item) => item.category === selectedCategory);
 
 
-  const basePrice = useMemo(() => {
-    return shoppingCartItems.reduce((total, item) => total + item.price, 0);
+  const { totalPrice, discountPercentage, basePrice } = useMemo(() => {
+    return calculateDiscount(shoppingCartItems);
   }, [shoppingCartItems]);
-
-  const { totalPrice, discountPercentage } = useMemo(() => {
-    const sandwichCount = shoppingCartItems.filter(item => item.category === "sandwich").length;
-    const extraCount = shoppingCartItems.filter(item => item.category === "extra").length;
-
-    if (sandwichCount === 1 && extraCount === 2) {
-      return { totalPrice: basePrice * 0.8, discountPercentage: 20 };
-    }
-
-    if (sandwichCount === 1 && extraCount === 1) {
-      return { totalPrice: basePrice * 0.85, discountPercentage: 15 };
-    }
-
-    if (extraCount === 2) {
-      return { totalPrice: basePrice * 0.9, discountPercentage: 10 };
-    }
-
-    return { totalPrice: basePrice, discountPercentage: 0 };
-  }, [basePrice, shoppingCartItems]);
 
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-zinc-50 font-sans">
-      <h1 className="text-4xl font-bold text-black">Good Hamburger</h1>
-      <div className="flex items-start justify-start w-full px-[2rem]">
-        <Filter onFilterChange={onFilterChange} />
-      </div>
-      <div className="flex">
-        <div>
-          {error &&
-            <div className="text-red-500">{error}</div>
-          }
+    <div className="min-h-screen bg-linear-to-br from-amber-50 via-orange-50 to-red-50">
+      {/* Header */}
+      <header className="bg-white shadow-md sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl sm:text-4xl font-extrabold bg-linear-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+              Good Hamburger
+            </h1>
+            <Button 
+              variant="primary"
+              size="md"
+              className="rounded-full"
+              onClick={() => openOrCloseModal()}
+            >
+              Orders ({orders.length})
+            </Button>
+          </div>
         </div>
-        <div>
-          {isLoading &&
-            <div>Loading...</div>
-          }
-          {filteredMenu.map((item, key) => {
-            return (
-              <div key={key} className="flex flex-col">
-                <MenuItemCard item={item} addItemToShoppingCart={addItemToShoppingCart} />
-              </div>
-            )
-          })}
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <Filter onFilterChange={onFilterChange} selectedCategory={selectedCategory} />
         </div>
-        <ShoppingCart resetShop={resetShop} setOrders={setOrders} shoppingCartItems={shoppingCartItems} isShoppingCartOpen={isShoppingCartOpen} toggleShoppingCart={toggleShoppingCart} totalPrice={totalPrice} discountPercentage={discountPercentage} basePrice={basePrice} />
-        <button className='absolute bottom-4 cursor-pointer right-4 w-fit h-fit px-4 py-2 rounded-full bg-green-600 text-white shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed' onClick={() => openOrCloseModal()}>Open Orders</button>
-      </div>
+
+        {isLoading && (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+          </div>
+        )}
+
+        {!isLoading && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+            {filteredMenu.map((item, key) => (
+              <MenuItemCard 
+                key={key} 
+                item={item} 
+                addItemToShoppingCart={addItemToShoppingCart} 
+              />
+            ))}
+          </div>
+        )}
+
+        {!isLoading && filteredMenu.length === 0 && (
+          <div className="text-center py-20">
+            <p className="text-gray-500 text-lg">No items found in this category</p>
+          </div>
+        )}
+      </main>
+
+      <ShoppingCart 
+        resetShop={resetShop} 
+        setOrders={setOrders} 
+        shoppingCartItems={shoppingCartItems} 
+        isShoppingCartOpen={isShoppingCartOpen} 
+        toggleShoppingCart={toggleShoppingCart} 
+        totalPrice={totalPrice} 
+        discountPercentage={discountPercentage} 
+        basePrice={basePrice}
+        removeItemFromCart={removeItemFromCart}
+      />
+
       {modal && <OrdersModal orders={orders} openOrCloseModal={openOrCloseModal} />}
+
+      <SuccessfullOrderToast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.isVisible}
+        onClose={() => setToast({ isVisible: false, message: '', type: 'success' })}
+      />
     </div>
   );
 }

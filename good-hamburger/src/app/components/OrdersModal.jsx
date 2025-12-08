@@ -1,21 +1,41 @@
 import React from 'react'
+import { OrderCard } from './OrderCard'
+import { Button } from './Button'
 
 export const OrdersModal = ({ orders, openOrCloseModal }) => {
     return (
-        <div className='fixed w-full h-full bg-black/60 p-10 flex flex-wrap gap-4 overflow-y-auto'>
-            <button className='absolute top-4 right-4 text-white cursor-pointer' onClick={() => openOrCloseModal()}>X</button>
-            {orders?.map((order, index) => <div key={order.clientName + index} className='bg-white flex gap-4 p-4 w-fit h-fit rounded-2xl hover:scale-110 transition'>
-                <img className='w-40 h-40 object-contain rounded-xl' src={order?.items[0]?.image} alt="" />
-                <div className='flex flex-col relative'>
-                    <span className='font-black text-2xl'>{order?.clientName}</span>
-                    <ul>
-                        {order?.items?.map((item, index) => <li key={item.name + index}>
-                            {item?.name} - {item?.category}
-                        </li>)}
-                    </ul>
-                    <span className='absolute right-2 bottom-2 text-2xl text-green-700 font-bold'>${+order?.totalPrice.toFixed(2)}</span>
+        <div className='fixed inset-0 z-50'>
+            <div 
+                className='absolute inset-0 bg-black/70 backdrop-blur-sm'
+                onClick={() => openOrCloseModal()}
+            />
+            <div className='absolute inset-4 sm:inset-8 md:inset-12 lg:inset-16 bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col'>
+                <div className='bg-linear-to-r from-orange-500 to-red-500 text-white p-6 flex items-center justify-between'>
+                    <h2 className='text-3xl font-bold'>Order History</h2>
+                    <Button 
+                        variant="icon"
+                        size="icon"
+                        onClick={() => openOrCloseModal()}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="currentColor">
+                            <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                        </svg>
+                    </Button>
                 </div>
-            </div>)}
+                <div className='flex-1 overflow-y-auto p-6'>
+                    {!orders.length ? (
+                        <div className='text-center py-20 h-full w-full flex items-center justify-center'>
+                            <p className='text-gray-500 text-lg'>No orders yet</p>
+                        </div>
+                    ) : (
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+                            {orders.map((order, index) => (
+                                <OrderCard key={order.clientName + index} order={order} />
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     )
 }
