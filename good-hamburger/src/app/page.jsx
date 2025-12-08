@@ -119,8 +119,9 @@ export default function Home() {
           <div className="flex w-full h-fit lg:h-full lg:overflow-hidden">
             <div className="flex flex-col gap-4 w-full h-fit lg:h-full">
               {isLoading &&
-                <div className="flex min-w-full min-h-full items-center justify-center">
+                <div className="flex flex-col gap-4 min-w-full min-h-full items-center justify-center">
                   <Loading />
+                  <span className='text-primary-600'>Loading...</span>
                 </div>
               }
               {!isLoading && <TitleText text={selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}></TitleText>}
