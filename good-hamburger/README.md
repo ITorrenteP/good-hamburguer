@@ -16,6 +16,7 @@ This project is built with:
 ### Prerequisites
 
 Make sure you have Node.js installed (version 18 or higher should work fine).
+Make sure to access the folder good-hamburger before runing/installing the app 'cd good-hamburger'
 
 ### Installation
 
