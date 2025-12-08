@@ -19,7 +19,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
   const [isShoppingCartOpen, setIsShoppingCartOpen] = useState(false)
   const [shoppingCartItems, setShoppingCartItems] = useState([])
-  const [toast, setToast] = useState({ isVisible: false, message: '', type: 'success' })
+  const [error, setError] = useState("")
   const menuApiInstance = new menuApi()
   const [modal, setModal] = useState(false)
 
@@ -40,6 +40,15 @@ export default function Home() {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error])
 
   const toggleShoppingCart = () => {
     setIsShoppingCartOpen(!isShoppingCartOpen)
@@ -54,10 +63,12 @@ export default function Home() {
   const openOrCloseModal = () => setModal(!modal)
 
   const addItemToShoppingCart = (id, category) => {
+    setError("")
+
     if (category === "sandwich") {
       const sandwichInOrder = shoppingCartItems.some((item) => item.category === category)
       if (sandwichInOrder) {
-        setToast({ isVisible: true, message: "You can't add more than one sandwich", type: 'error' })
+        setError("You can't add more than one sandwich")
         return
       }
     }
@@ -65,7 +76,7 @@ export default function Home() {
     if (category === "extra") {
       const idInOrder = shoppingCartItems.some((item) => item.id === id)
       if (idInOrder) {
-        setToast({ isVisible: true, message: "You can't add more than one of this item", type: 'error' })
+        setError("You can't add more than one of this item")
         return
       }
     }
@@ -73,7 +84,6 @@ export default function Home() {
     const item = menu.find((item) => item.id === id);
     if (item) {
       setShoppingCartItems(prev => [...prev, item]);
-      setToast({ isVisible: true, message: `${item.name} added to cart!`, type: 'success' })
     }
   }
 
@@ -131,17 +141,10 @@ export default function Home() {
       <SuccessfullOrderToast
         message={error}
         type="error"
-        isVisible={error}
-        onClose={() => setError(false)}
+        isVisible={!!error}
+        onClose={() => setError("")}
       />
       {modal && <OrdersModal orders={orders} openOrCloseModal={openOrCloseModal} />}
-
-      <SuccessfullOrderToast
-        message={toast.message}
-        type={toast.type}
-        isVisible={toast.isVisible}
-        onClose={() => setToast({ isVisible: false, message: '', type: 'success' })}
-      />
     </div>
   );
 }
