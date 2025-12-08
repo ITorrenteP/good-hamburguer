@@ -8,6 +8,7 @@ import { OrdersModal } from "./components/OrdersModal";
 import { SuccessfullOrderToast } from "./components/SuccessfullOrderToast";
 import { Button } from "./components/Button";
 import { TitleText } from "./components/TitleText";
+import { Loading } from "./components/Loading";
 
 export default function Home() {
 
@@ -136,9 +137,11 @@ export default function Home() {
           <div className="flex w-full h-full overflow-hidden">
             <div className="flex flex-col gap-4 w-full h-full">
               {isLoading &&
-                <div>Loading...</div>
+                <div className="flex min-w-full min-h-full items-center justify-center">
+                  <Loading />
+                </div>
               }
-              <TitleText text={selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}></TitleText>
+              {!isLoading && <TitleText text={selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}></TitleText>}
               <div className="flex gap-4 w-full flex-wrap h-full overflow-y-auto">
                 {filteredMenu?.map((item, key) => {
                   return (

@@ -1,21 +1,30 @@
 import React from 'react'
+import { CloseButton } from './CloseButton'
+import { OrderCard } from './OrderCard'
 
 export const OrdersModal = ({ orders, openOrCloseModal }) => {
     return (
-        <div className='fixed w-full h-full top-0 bg-black/60 p-10 flex flex-wrap gap-4 overflow-y-auto'>
-            <button className='absolute top-4 right-4 text-white cursor-pointer' onClick={() => openOrCloseModal()}>X</button>
-            {orders?.map((order, index) => <div key={order.clientName + index} className='bg-white flex gap-4 p-4 w-fit h-fit rounded-2xl hover:scale-110 transition'>
-                <img className='w-40 h-40 object-contain rounded-xl' src={order?.items[0]?.image} alt="" />
-                <div className='flex flex-col relative'>
-                    <span className='font-black text-2xl'>{order?.clientName}</span>
-                    <ul>
-                        {order?.items?.map((item, index) => <li key={item.name + index}>
-                            {item?.name} - {item?.category}
-                        </li>)}
-                    </ul>
-                    <span className='absolute right-2 bottom-2 text-2xl text-green-700 font-bold'>${+order?.totalPrice.toFixed(2)}</span>
+        <div className='fixed w-full h-full top-0 bg-black/60 backdrop-blur-lg p-10 flex flex-wrap gap-4 overflow-y-auto'>
+            <div className='min-w-full min-h-full fixed top-0 left-0 z-[-1]' onClick={() => openOrCloseModal()}></div>
+            <div className='bg-white rounded-2xl w-full h-full overflow-hidden'>
+                <div className='flex w-full h-fit bg-primary-600 p-4 items-center justify-between'>
+                    <span className='text-2xl font-bold'>Orders</span>
+                    <CloseButton onClick={() => openOrCloseModal()} className='text-white cursor-pointer hover:bg-red-800'></CloseButton>
                 </div>
-            </div>)}
+                <div className='p-6 overflow-y-auto h-full'>
+                    {orders?.length === 0 ? (
+                        <div className='flex items-center justify-center h-full'>
+                            <p className='text-gray-500 text-lg'>No orders yet</p>
+                        </div>
+                    ) : (
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+                            {orders?.map((order, index) => (
+                                <OrderCard key={order.clientName + index} order={order} />
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     )
 }

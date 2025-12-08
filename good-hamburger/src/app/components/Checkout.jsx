@@ -6,7 +6,6 @@ export const Checkout = ({ createOrder, items }) => {
 
     const [clientName, setClientName] = useState('')
 
-
     return (
         <div className='flex flex-col w-full h-fit gap-4 pt-4'>
             <div className='flex flex-col relative'>
