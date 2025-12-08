@@ -5,9 +5,10 @@ import { menuApi } from "./services/menuApi";
 import { ShoppingCart } from "./components/ShoppingCart";
 import { Filter } from "./components/Filter";
 import { OrdersModal } from "./components/OrdersModal";
-import { Button } from "./components/Button";
-import { calculateDiscount } from "./utils/discountCalculator";
 import { SuccessfullOrderToast } from "./components/SuccessfullOrderToast";
+import { Button } from "./components/Button";
+import { TitleText } from "./components/TitleText";
+import { Loading } from "./components/Loading";
 
 export default function Home() {
 
@@ -42,7 +43,7 @@ export default function Home() {
   const toggleShoppingCart = () => {
     setIsShoppingCartOpen(!isShoppingCartOpen)
   }
-  
+
   const resetShop = () => {
     setSelectedCategory('all')
     setIsShoppingCartOpen(false)
@@ -83,6 +84,10 @@ export default function Home() {
     }
   }
 
+  const removeItemFromCart = (itemId) => {
+    setShoppingCartItems(prev => prev.filter((item) => item.id !== itemId));
+  }
+
   const onFilterChange = (category) => {
     setSelectedCategory(category);
   }
@@ -98,68 +103,44 @@ export default function Home() {
 
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-amber-50 via-orange-50 to-red-50">
-      {/* Header */}
-      <header className="bg-white shadow-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl sm:text-4xl font-extrabold bg-linear-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-              Good Hamburger
-            </h1>
-            <Button 
-              variant="primary"
-              size="md"
-              className="rounded-full"
-              onClick={() => openOrCloseModal()}
-            >
-              Orders ({orders.length})
-            </Button>
+    <div className="flex flex-col min-h-screen h-fit lg:h-screen items-center bg-background font-sans px-4 lg:px-20 pt-25 pb-10 lg:overflow-hidden">
+      <div className="flex w-full h-20 fixed top-0 px-4 lg:px-20 bg-white items-center justify-between">
+        <h1 className="text-xl lg:text-4xl font-bold text-primary-600">Good Hamburger</h1>
+        <Button type="" onClick={() => openOrCloseModal()}>Open Orders</Button>
+      </div>
+      <div className="flex flex-col lg:flex-row gap-4 w-full h-fit lg:h-full lg:overflow-hidden">
+        <div className="flex flex-col w-full gap-4 h-fit lg:h-full lg:overflow-hidden">
+          <div className="flex items-start justify-start w-full">
+            <Filter onFilterChange={onFilterChange} selectedCategory={selectedCategory} />
+          </div>
+          <div className="flex w-full h-fit lg:h-full lg:overflow-hidden">
+            <div className="flex flex-col gap-4 w-full h-fit lg:h-full">
+              {isLoading &&
+                <div className="flex min-w-full min-h-full items-center justify-center">
+                  <Loading />
+                </div>
+              }
+              {!isLoading && <TitleText text={selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}></TitleText>}
+              <div className="flex flex-col sm:flex-row gap-4 w-full flex-wrap h-fit lg:h-full lg:overflow-y-auto">
+                {filteredMenu?.map((item, key) => {
+                  return (
+                    <div key={key} className="flex flex-col">
+                      <MenuItemCard item={item} addItemToShoppingCart={addItemToShoppingCart} />
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
           </div>
         </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <Filter onFilterChange={onFilterChange} selectedCategory={selectedCategory} />
-        </div>
-
-        {isLoading && (
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
-          </div>
-        )}
-
-        {!isLoading && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-            {filteredMenu.map((item, key) => (
-              <MenuItemCard 
-                key={key} 
-                item={item} 
-                addItemToShoppingCart={addItemToShoppingCart} 
-              />
-            ))}
-          </div>
-        )}
-
-        {!isLoading && filteredMenu.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-gray-500 text-lg">No items found in this category</p>
-          </div>
-        )}
-      </main>
-
-      <ShoppingCart 
-        resetShop={resetShop} 
-        setOrders={setOrders} 
-        shoppingCartItems={shoppingCartItems} 
-        isShoppingCartOpen={isShoppingCartOpen} 
-        toggleShoppingCart={toggleShoppingCart} 
-        totalPrice={totalPrice} 
-        discountPercentage={discountPercentage} 
-        basePrice={basePrice}
-        removeItemFromCart={removeItemFromCart}
+        <ShoppingCart resetShop={resetShop} setOrders={setOrders} shoppingCartItems={shoppingCartItems} isShoppingCartOpen={isShoppingCartOpen} toggleShoppingCart={toggleShoppingCart} totalPrice={totalPrice} discountPercentage={discountPercentage} basePrice={basePrice} removeItemFromCart={removeItemFromCart} />
+      </div>
+      <SuccessfullOrderToast
+        message={error}
+        type="error"
+        isVisible={error}
+        onClose={() => setError(false)}
       />
-
       {modal && <OrdersModal orders={orders} openOrCloseModal={openOrCloseModal} />}
 
       <SuccessfullOrderToast

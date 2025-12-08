@@ -1,26 +1,41 @@
 import React from 'react'
-import { Button } from './Button'
+import { Button } from './Button';
 
 export const Filter = ({ onFilterChange, selectedCategory }) => {
+
     const filters = [
-        { id: 'all', label: 'All Items' },
-        { id: 'sandwich', label: 'Sandwiches' },
-        { id: 'extra', label: 'Extras' }
-    ];
+        {
+            type: 'all',
+            name: 'All'
+        },
+        {
+            type: 'sandwich',
+            name: 'Sandwich'
+        },
+        {
+            type: 'extra',
+            name: 'Extra'
+        }
+    ]
+
+    const getStyle = (category) => {
+        console.log(category, selectedCategory);
+        return selectedCategory === category ? 'filter-active' : 'filter-inactive'
+    }
 
     return (
-        <div className="flex gap-3 flex-wrap">
-            {filters.map((filter) => (
-                <Button
-                    key={filter.id}
-                    onClick={() => onFilterChange(filter.id)}
-                    variant={selectedCategory === filter.id ? 'filter-active' : 'filter-inactive'}
-                    size="md"
-                    className="rounded-full"
+        <div className="flex flex-col gap-4 text-black w-full">
+            <span className='text-xl font-bold'>Categories</span>
+            <div className='flex flex-col lg:flex-row gap-2 w-full'>
+                {filters.map((filter) => <Button
+                    key={filter.type}
+                    onClick={() => onFilterChange(filter.type)}
+                    variant={getStyle(filter.type)}
+
                 >
-                    {filter.label}
-                </Button>
-            ))}
+                    {filter.name}
+                </Button>)}
+            </div>
         </div>
     )
 }
