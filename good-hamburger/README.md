@@ -6,12 +6,10 @@ A simple online burger shop built with Next.js. Browse the menu, add items to yo
 
 This project is built with:
 
-- **Next.js 16** - React framework for the frontend
-- **React 19** - UI library
+- **Next.js 16**
+- **React 19**
 - **Tailwind CSS 4** - For styling (using the new PostCSS setup)
 - **Jest** - Testing framework for unit tests (currently only testing pure functions)
-
-The app uses Next.js App Router and is fully client-side rendered. All the menu data comes from a local JSON file, and the discount logic is implemented as a pure function that's easy to test.
 
 ## Getting Started
 
@@ -67,8 +65,8 @@ npm run test:watch
 
 The tests cover the discount scenarios:
 - 20% discount when you have 1 sandwich + 2 extras
-- 15% discount for 1 sandwich + 1 extra
-- 10% discount for 2 extras (no sandwich)
+- 15% discount for 1 sandwich + 1 soft drink
+- 10% discount for 1 sandwich + 1 fries
 - No discount for other combinations
 
 ## Known Limitations and Assumptions
@@ -86,16 +84,6 @@ A few things to keep in mind:
 - You can only add one of each extra item (Fries, Soft Drink, etc.) per order
 - These restrictions are enforced in the UI, but there's no backend validation
 
-**Images:**
-- Product images are loaded from external URLs (Freepik). If those URLs go down, the images won't load. In production you'd want to host these yourself.
-
-**Discount Logic:**
-- Discounts are calculated based on specific combinations. The highest applicable discount is applied (20% > 15% > 10% > 0%)
-- Only one discount can be applied at a time, even if multiple rules could match
-
-**No Backend:**
-- This is a frontend-only demo. There's no user authentication, payment processing, or order management system. It's just the UI and client-side logic.
-
 ## Project Structure
 
 The main code is in `src/app/`:
@@ -104,9 +92,3 @@ The main code is in `src/app/`:
 - `utils/` - Utility functions (like the discount calculator)
 - `services/` - API/service layer (currently just reads from JSON)
 - `utils/__tests__/` - Unit tests
-
-## Learn More
-
-To learn more about Next.js, check out:
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Next.js GitHub repository](https://github.com/vercel/next.js)
