@@ -19,8 +19,8 @@ export const ShoppingCart = ({ resetShop, setOrders, toggleShoppingCart, isShopp
     }
 
     return (
-        <>
-            <div className='text-black bg-white rounded-2xl flex flex-col p-6 w-150 max-w-150 overflow-hidden'>
+        <div>
+            <div className='text-black bg-white rounded-2xl flex flex-col gap-4 p-6 w-full h-full lg:w-120 max-w-120 overflow-hidden'>
                 <TitleText text={'Invoice'}></TitleText>
                 <div className='flex flex-col gap-4 mt-6 h-full overflow-y-auto'>
                     {shoppingCartItems.length === 0 ? (
@@ -62,6 +62,6 @@ export const ShoppingCart = ({ resetShop, setOrders, toggleShoppingCart, isShopp
                 isVisible={showToast}
                 onClose={() => setShowToast(false)}
             />
-        </>
+        </div>
     )
 }

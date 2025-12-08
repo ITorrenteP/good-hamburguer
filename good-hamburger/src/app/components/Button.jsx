@@ -17,8 +17,8 @@ export const Button = ({
     secondary: 'bg-white text-gray-700 hover:bg-gray-50 shadow-sm border border-gray-200',
     icon: 'rounded-full transition-colors cursor-pointer',
     filter: 'font-bold text-black bg-white rounded-lg transition-all cursor-pointer',
-    'filter-active': 'font-bold cursor-pointer rounded-lg w-40 text-primary-600 bg-primary-200 border-primary-600 border',
-    'filter-inactive': 'font-bold border border-white rounded-lg cursor-pointer text-black w-40 bg-white',
+    'filter-active': 'font-bold cursor-pointer rounded-lg w:full lg:w-40 text-primary-600 bg-primary-200 border-primary-600 border',
+    'filter-inactive': 'font-bold border border-white rounded-lg cursor-pointer text-black w:full lg:w-40 bg-white',
   };
 
   const sizes = {

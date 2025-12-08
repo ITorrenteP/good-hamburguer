@@ -24,9 +24,9 @@ export const Filter = ({ onFilterChange, selectedCategory }) => {
     }
 
     return (
-        <div className="flex flex-col gap-4 text-black">
+        <div className="flex flex-col gap-4 text-black w-full">
             <span className='text-xl font-bold'>Categories</span>
-            <div className='flex gap-2'>
+            <div className='flex flex-col lg:flex-row gap-2 w-full'>
                 {filters.map((filter) => <Button
                     key={filter.type}
                     onClick={() => onFilterChange(filter.type)}

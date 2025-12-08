@@ -124,25 +124,25 @@ export default function Home() {
 
 
   return (
-    <div className="flex flex-col min-h-screen h-screen items-center bg-background font-sans px-20 pt-25 pb-10 overflow-hidden">
-      <div className="flex w-full h-20 fixed top-0 px-20 bg-white items-center justify-between">
-        <h1 className="text-4xl font-bold text-primary-600">Good Hamburger</h1>
+    <div className="flex flex-col min-h-screen h-fit lg:h-screen items-center bg-background font-sans px-4 lg:px-20 pt-25 pb-10 lg:overflow-hidden">
+      <div className="flex w-full h-20 fixed top-0 px-4 lg:px-20 bg-white items-center justify-between">
+        <h1 className="text-xl lg:text-4xl font-bold text-primary-600">Good Hamburger</h1>
         <Button type="" onClick={() => openOrCloseModal()}>Open Orders</Button>
       </div>
-      <div className="flex gap-4 w-full h-full overflow-hidden">
-        <div className="flex flex-col w-full gap-4 h-full overflow-hidden">
+      <div className="flex flex-col lg:flex-row gap-4 w-full h-fit lg:h-full lg:overflow-hidden">
+        <div className="flex flex-col w-full gap-4 h-fit lg:h-full lg:overflow-hidden">
           <div className="flex items-start justify-start w-full">
             <Filter onFilterChange={onFilterChange} selectedCategory={selectedCategory} />
           </div>
-          <div className="flex w-full h-full overflow-hidden">
-            <div className="flex flex-col gap-4 w-full h-full">
+          <div className="flex w-full h-fit lg:h-full lg:overflow-hidden">
+            <div className="flex flex-col gap-4 w-full h-fit lg:h-full">
               {isLoading &&
                 <div className="flex min-w-full min-h-full items-center justify-center">
                   <Loading />
                 </div>
               }
               {!isLoading && <TitleText text={selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}></TitleText>}
-              <div className="flex gap-4 w-full flex-wrap h-full overflow-y-auto">
+              <div className="flex flex-col sm:flex-row gap-4 w-full flex-wrap h-fit lg:h-full lg:overflow-y-auto">
                 {filteredMenu?.map((item, key) => {
                   return (
                     <div key={key} className="flex flex-col">

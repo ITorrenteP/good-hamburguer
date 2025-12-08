@@ -4,9 +4,9 @@ import { Button } from './Button'
 
 export const MenuItemCard = ({ item, addItemToShoppingCart }) => {
     return (
-        <div className='flex flex-col bg-white text-black rounded-2xl overflow-hidden gap-2 h-72 w-[16rem] p-4'>
+        <div className='flex flex-col bg-white text-black rounded-2xl overflow-hidden gap-2 h-72 w-full sm:w-[16rem] p-4'>
             <div className='w-full flex items-center justify-center overflow-hidden rounded-xl'>
-                <Image width={300} alt={"Food Item"} height={150} src={item.image} />
+                <Image width={400} alt={"Food Item"} height={150} src={item.image} />
             </div>
             <div>
                 <h1 className='font-bold text-xl truncate'>{item.name}</h1>
