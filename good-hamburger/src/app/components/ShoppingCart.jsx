@@ -20,7 +20,7 @@ export const ShoppingCart = ({ resetShop, setOrders, toggleShoppingCart, isShopp
     return (
         <>
             {/* Cart Toggle Button */}
-            <div className='fixed bottom-6 right-6 z-30 relative'>
+            <div className='fixed bottom-6 right-6 z-30'>
                 <Button
                     onClick={() => toggleShoppingCart()}
                     variant="primary"

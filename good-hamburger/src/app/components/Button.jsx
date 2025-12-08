@@ -10,7 +10,7 @@ export const Button = ({
   type = 'button',
   ...props 
 }) => {
-  const baseClasses = 'font-semibold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50';
+  const baseClasses = 'font-semibold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer';
   
   const variants = {
     primary: 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95',

@@ -6,6 +6,8 @@ import { ShoppingCart } from "./components/ShoppingCart";
 import { Filter } from "./components/Filter";
 import { OrdersModal } from "./components/OrdersModal";
 import { Button } from "./components/Button";
+import { calculateDiscount } from "./utils/discountCalculator";
+import { SuccessfullOrderToast } from "./components/SuccessfullOrderToast";
 
 export default function Home() {
 
@@ -15,7 +17,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
   const [isShoppingCartOpen, setIsShoppingCartOpen] = useState(false)
   const [shoppingCartItems, setShoppingCartItems] = useState([])
-  const [error, setError] = useState("")
+  const [toast, setToast] = useState({ isVisible: false, message: '', type: 'success' })
   const menuApiInstance = new menuApi()
   const [modal, setModal] = useState(false)
 
@@ -36,15 +38,6 @@ export default function Home() {
     fetchData()
   }, [])
 
-  useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => {
-        setError("");
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [error])
 
   const toggleShoppingCart = () => {
     setIsShoppingCartOpen(!isShoppingCartOpen)
@@ -59,12 +52,10 @@ export default function Home() {
   const openOrCloseModal = () => setModal(!modal)
 
   const addItemToShoppingCart = (id, category) => {
-    setError("")
-
     if (category === "sandwich") {
       const sandwichInOrder = shoppingCartItems.some((item) => item.category === category)
       if (sandwichInOrder) {
-        setError("You can't add more than one sandwich")
+        setToast({ isVisible: true, message: "You can't add more than one sandwich", type: 'error' })
         return
       }
     }
@@ -72,7 +63,7 @@ export default function Home() {
     if (category === "extra") {
       const idInOrder = shoppingCartItems.some((item) => item.id === id)
       if (idInOrder) {
-        setError("You can't add more than one of this item")
+        setToast({ isVisible: true, message: "You can't add more than one of this item", type: 'error' })
         return
       }
     }
@@ -80,6 +71,7 @@ export default function Home() {
     const item = menu.find((item) => item.id === id);
     if (item) {
       setShoppingCartItems(prev => [...prev, item]);
+      setToast({ isVisible: true, message: `${item.name} added to cart!`, type: 'success' })
     }
   }
 
@@ -92,28 +84,9 @@ export default function Home() {
     : menu.filter((item) => item.category === selectedCategory);
 
 
-  const basePrice = useMemo(() => {
-    return shoppingCartItems.reduce((total, item) => total + item.price, 0);
+  const { totalPrice, discountPercentage, basePrice } = useMemo(() => {
+    return calculateDiscount(shoppingCartItems);
   }, [shoppingCartItems]);
-
-  const { totalPrice, discountPercentage } = useMemo(() => {
-    const sandwichCount = shoppingCartItems.filter(item => item.category === "sandwich").length;
-    const extraCount = shoppingCartItems.filter(item => item.category === "extra").length;
-
-    if (sandwichCount === 1 && extraCount === 2) {
-      return { totalPrice: basePrice * 0.8, discountPercentage: 20 };
-    }
-
-    if (sandwichCount === 1 && extraCount === 1) {
-      return { totalPrice: basePrice * 0.85, discountPercentage: 15 };
-    }
-
-    if (extraCount === 2) {
-      return { totalPrice: basePrice * 0.9, discountPercentage: 10 };
-    }
-
-    return { totalPrice: basePrice, discountPercentage: 0 };
-  }, [basePrice, shoppingCartItems]);
 
 
   return (
@@ -123,7 +96,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-3xl sm:text-4xl font-extrabold bg-linear-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-              🍔 Good Burger
+              Good Burger
             </h1>
             <Button 
               variant="primary"
@@ -141,12 +114,6 @@ export default function Home() {
         <div className="mb-8">
           <Filter onFilterChange={onFilterChange} selectedCategory={selectedCategory} />
         </div>
-
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg shadow-sm">
-            <p className="text-red-700 font-medium">{error}</p>
-          </div>
-        )}
 
         {isLoading && (
           <div className="flex justify-center items-center py-20">
@@ -185,6 +152,13 @@ export default function Home() {
       />
 
       {modal && <OrdersModal orders={orders} openOrCloseModal={openOrCloseModal} />}
+
+      <SuccessfullOrderToast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.isVisible}
+        onClose={() => setToast({ isVisible: false, message: '', type: 'success' })}
+      />
     </div>
   );
 }
