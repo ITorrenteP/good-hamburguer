@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Button } from './Button'
 
 export const SuccessfullOrderToast = ({ message, type = 'success', isVisible, onClose, duration = 3000 }) => {
   const [shouldRender, setShouldRender] = useState(false);
@@ -47,14 +48,16 @@ export const SuccessfullOrderToast = ({ message, type = 'success', isVisible, on
     <div className={`fixed top-4 ${shouldRender ? 'animate-slide-in' : 'animate-slide-out'} right-4 ${bgColor} text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 z-50`}>
       <div className="shrink-0">{getIcon()}</div>
       <div className="font-medium">{message}</div>
-      <button 
+      <Button 
         onClick={onClose}
-        className="ml-2 text-white hover:text-gray-200 shrink-0"
+        variant="icon"
+        size="icon"
+        className="ml-2 shrink-0"
       >
         <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
           <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
         </svg>
-      </button>
+      </Button>
     </div>
   )
 }
