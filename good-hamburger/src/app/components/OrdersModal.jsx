@@ -9,7 +9,6 @@ export const OrdersModal = ({ orders, openOrCloseModal }) => {
                 className='absolute inset-0 bg-black/70 backdrop-blur-sm'
                 onClick={() => openOrCloseModal()}
             />
-            
             <div className='absolute inset-4 sm:inset-8 md:inset-12 lg:inset-16 bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col'>
                 <div className='bg-linear-to-r from-orange-500 to-red-500 text-white p-6 flex items-center justify-between'>
                     <h2 className='text-3xl font-bold'>Order History</h2>
@@ -24,8 +23,8 @@ export const OrdersModal = ({ orders, openOrCloseModal }) => {
                     </Button>
                 </div>
                 <div className='flex-1 overflow-y-auto p-6'>
-                    {orders.length === 0 ? (
-                        <div className='text-center py-20'>
+                    {!orders.length ? (
+                        <div className='text-center py-20 h-full w-full flex items-center justify-center'>
                             <p className='text-gray-500 text-lg'>No orders yet</p>
                         </div>
                     ) : (

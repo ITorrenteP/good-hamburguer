@@ -75,6 +75,14 @@ export default function Home() {
     }
   }
 
+  const removeItemFromCart = (itemId) => {
+    const item = shoppingCartItems.find((item) => item.id === itemId);
+    if (item) {
+      setShoppingCartItems(prev => prev.filter((item) => item.id !== itemId));
+      setToast({ isVisible: true, message: `${item.name} removed from cart`, type: 'success' })
+    }
+  }
+
   const onFilterChange = (category) => {
     setSelectedCategory(category);
   }
@@ -96,7 +104,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-3xl sm:text-4xl font-extrabold bg-linear-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-              Good Burger
+              Good Hamburger
             </h1>
             <Button 
               variant="primary"
@@ -148,7 +156,8 @@ export default function Home() {
         toggleShoppingCart={toggleShoppingCart} 
         totalPrice={totalPrice} 
         discountPercentage={discountPercentage} 
-        basePrice={basePrice} 
+        basePrice={basePrice}
+        removeItemFromCart={removeItemFromCart}
       />
 
       {modal && <OrdersModal orders={orders} openOrCloseModal={openOrCloseModal} />}

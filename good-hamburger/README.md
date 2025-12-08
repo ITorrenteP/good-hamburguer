@@ -1,4 +1,4 @@
-# Good Burger 🍔
+# Good Hamburger 🍔
 
 A simple online burger shop built with Next.js. Browse the menu, add items to your cart, and place orders with automatic discount calculations.
 

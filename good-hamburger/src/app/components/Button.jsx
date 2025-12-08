@@ -16,6 +16,7 @@ export const Button = ({
     primary: 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95',
     secondary: 'bg-white text-gray-700 hover:bg-gray-50 shadow-sm border border-gray-200',
     icon: 'text-white hover:bg-white/20 rounded-full transition-colors',
+    delete: 'rounded-full bg-red-600 hover:bg-red-800 transition',
     filter: 'rounded-full',
     'filter-active': 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-105',
     'filter-inactive': 'bg-white text-gray-700 hover:bg-gray-50 shadow-sm border border-gray-200'
