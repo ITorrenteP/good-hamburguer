@@ -63,14 +63,4 @@ titleStyle {
   animation: slide-out 0.3s ease-in;
 }
 
-.border-dashed-spaced {
-  border-style: dashed;
-  border-image: repeating-linear-gradient(
-    to right,
-    transparent,
-    transparent 8px,
-    currentColor 8px,
-    currentColor 12px
-  ) 1;
-}
 

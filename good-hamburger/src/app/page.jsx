@@ -129,7 +129,7 @@ export default function Home() {
         <Button type="" onClick={() => openOrCloseModal()}>Open Orders</Button>
       </div>
       <div className="flex gap-4 w-full h-full overflow-hidden">
-        <div className="flex flex-col gap-4 h-full overflow-hidden">
+        <div className="flex flex-col w-full gap-4 h-full overflow-hidden">
           <div className="flex items-start justify-start w-full">
             <Filter onFilterChange={onFilterChange} selectedCategory={selectedCategory} />
           </div>
