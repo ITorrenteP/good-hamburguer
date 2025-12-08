@@ -11,7 +11,7 @@ export const OrdersModal = ({ orders, openOrCloseModal }) => {
                     <span className='text-2xl font-bold'>Orders</span>
                     <CloseButton onClick={() => openOrCloseModal()} className='text-white cursor-pointer hover:bg-red-800'></CloseButton>
                 </div>
-                <div className='pb-18 lg:pb-25 lg:p-6 overflow-y-scroll h-full w-full'>
+                <div className='pb-18 lg:pb-25 lg:p-6 overflow-y-auto h-full w-full'>
                     {orders?.length === 0 ? (
                         <div className='flex items-center justify-center h-full'>
                             <p className='text-gray-500 text-lg'>No orders yet</p>
