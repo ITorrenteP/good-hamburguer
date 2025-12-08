@@ -5,6 +5,9 @@ import { menuApi } from "./services/menuApi";
 import { ShoppingCart } from "./components/ShoppingCart";
 import { Filter } from "./components/Filter";
 import { OrdersModal } from "./components/OrdersModal";
+import { SuccessfullOrderToast } from "./components/SuccessfullOrderToast";
+import { Button } from "./components/Button";
+import { TitleText } from "./components/TitleText";
 
 export default function Home() {
 
@@ -82,6 +85,10 @@ export default function Home() {
     }
   }
 
+  const removeItemFromCart = (itemId) => {
+    setShoppingCartItems(prev => prev.filter((item) => item.id !== itemId));
+  }
+
   const onFilterChange = (category) => {
     setSelectedCategory(category);
   }
@@ -116,32 +123,42 @@ export default function Home() {
 
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-background font-sans">
-      <h1 className="text-4xl font-bold text-black">Good Hamburger</h1>
-      <div className="flex items-start justify-start w-full px-[2rem]">
-        <Filter onFilterChange={onFilterChange} selectedCategory={selectedCategory} />
+    <div className="flex flex-col min-h-screen h-screen items-center bg-background font-sans px-20 pt-25 pb-10 overflow-hidden">
+      <div className="flex w-full h-20 fixed top-0 px-20 bg-white items-center justify-between">
+        <h1 className="text-4xl font-bold text-primary-600">Good Hamburger</h1>
+        <Button type="" onClick={() => openOrCloseModal()}>Open Orders</Button>
       </div>
-      <div className="flex">
-        <div>
-          {error &&
-            <div className="text-red-500">{error}</div>
-          }
-        </div>
-        <div>
-          {isLoading &&
-            <div>Loading...</div>
-          }
-          {filteredMenu.map((item, key) => {
-            return (
-              <div key={key} className="flex flex-col">
-                <MenuItemCard item={item} addItemToShoppingCart={addItemToShoppingCart} />
+      <div className="flex gap-4 w-full h-full overflow-hidden">
+        <div className="flex flex-col gap-4 h-full overflow-hidden">
+          <div className="flex items-start justify-start w-full">
+            <Filter onFilterChange={onFilterChange} selectedCategory={selectedCategory} />
+          </div>
+          <div className="flex w-full h-full overflow-hidden">
+            <div className="flex flex-col gap-4 w-full h-full">
+              {isLoading &&
+                <div>Loading...</div>
+              }
+              <TitleText text={selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}></TitleText>
+              <div className="flex gap-4 w-full flex-wrap h-full overflow-y-auto">
+                {filteredMenu?.map((item, key) => {
+                  return (
+                    <div key={key} className="flex flex-col">
+                      <MenuItemCard item={item} addItemToShoppingCart={addItemToShoppingCart} />
+                    </div>
+                  )
+                })}
               </div>
-            )
-          })}
+            </div>
+          </div>
         </div>
-        <ShoppingCart resetShop={resetShop} setOrders={setOrders} shoppingCartItems={shoppingCartItems} isShoppingCartOpen={isShoppingCartOpen} toggleShoppingCart={toggleShoppingCart} totalPrice={totalPrice} discountPercentage={discountPercentage} basePrice={basePrice} />
-        <button className='absolute bottom-4 cursor-pointer right-4 w-fit h-fit px-4 py-2 rounded-full bg-green-600 text-white shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed' onClick={() => openOrCloseModal()}>Open Orders</button>
+        <ShoppingCart resetShop={resetShop} setOrders={setOrders} shoppingCartItems={shoppingCartItems} isShoppingCartOpen={isShoppingCartOpen} toggleShoppingCart={toggleShoppingCart} totalPrice={totalPrice} discountPercentage={discountPercentage} basePrice={basePrice} removeItemFromCart={removeItemFromCart} />
       </div>
+      <SuccessfullOrderToast
+        message={error}
+        type="error"
+        isVisible={error}
+        onClose={() => setError(false)}
+      />
       {modal && <OrdersModal orders={orders} openOrCloseModal={openOrCloseModal} />}
     </div>
   );

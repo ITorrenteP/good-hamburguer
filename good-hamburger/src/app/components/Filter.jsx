@@ -28,6 +28,7 @@ export const Filter = ({ onFilterChange, selectedCategory }) => {
             <span className='text-xl font-bold'>Categories</span>
             <div className='flex gap-2'>
                 {filters.map((filter) => <Button
+                    key={filter.type}
                     onClick={() => onFilterChange(filter.type)}
                     variant={getStyle(filter.type)}
 
