@@ -62,6 +62,6 @@ export const ShoppingCart = ({ resetShop, setOrders, toggleShoppingCart, isShopp
                 isVisible={showToast}
                 onClose={() => setShowToast(false)}
             />
-        </>
+        </div>
     )
 }

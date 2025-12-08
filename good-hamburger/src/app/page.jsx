@@ -9,6 +9,7 @@ import { SuccessfullOrderToast } from "./components/SuccessfullOrderToast";
 import { Button } from "./components/Button";
 import { TitleText } from "./components/TitleText";
 import { Loading } from "./components/Loading";
+import { calculateDiscount } from "./utils/discountCalculator";
 
 export default function Home() {
 
@@ -73,14 +74,6 @@ export default function Home() {
     if (item) {
       setShoppingCartItems(prev => [...prev, item]);
       setToast({ isVisible: true, message: `${item.name} added to cart!`, type: 'success' })
-    }
-  }
-
-  const removeItemFromCart = (itemId) => {
-    const item = shoppingCartItems.find((item) => item.id === itemId);
-    if (item) {
-      setShoppingCartItems(prev => prev.filter((item) => item.id !== itemId));
-      setToast({ isVisible: true, message: `${item.name} removed from cart`, type: 'success' })
     }
   }
 
