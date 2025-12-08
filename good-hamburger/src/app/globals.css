@@ -6,7 +6,9 @@
 }
 
 @theme inline {
-  --color-background: var(--background);
+  --color-primary-600: #ED5737;
+  --color-primary-200: #FDEDED;
+  --color-background: #F0F1F5;
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -24,6 +26,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+titleStyle {
+  @apply font-bold text-black
+}
+
 
 @keyframes slide-in {
   from {
@@ -54,3 +61,5 @@ body {
 .animate-slide-out {
   animation: slide-out 0.3s ease-in;
 }
+
+

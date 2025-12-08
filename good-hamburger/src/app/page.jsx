@@ -48,7 +48,7 @@ export default function Home() {
   const toggleShoppingCart = () => {
     setIsShoppingCartOpen(!isShoppingCartOpen)
   }
-  
+
   const resetShop = () => {
     setSelectedCategory('all')
     setIsShoppingCartOpen(false)
@@ -116,10 +116,10 @@ export default function Home() {
 
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-zinc-50 font-sans">
+    <div className="flex flex-col min-h-screen items-center justify-center bg-background font-sans">
       <h1 className="text-4xl font-bold text-black">Good Hamburger</h1>
       <div className="flex items-start justify-start w-full px-[2rem]">
-        <Filter onFilterChange={onFilterChange} />
+        <Filter onFilterChange={onFilterChange} selectedCategory={selectedCategory} />
       </div>
       <div className="flex">
         <div>
